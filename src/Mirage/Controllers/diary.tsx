@@ -48,6 +48,15 @@ export const updateDiary = (schema: any, req: Request): Diary | Response => {
     return handleErrors(error, "Failed to update Diary.");
   }
 };
+export const deleteDiary = (schema: any, req: Request): Diary | Response => {
+  try {
+    const diary = schema.diaries.find(req.params.id);
+    diary.destroy();
+    return diary.attrs as Diary;
+  } catch (error) {
+    return handleErrors(error, "Failed to update Diary.");
+  }
+};
 
 export const getDiaries = (schema: any, req: Request): Diary[] | Response => {
   try {
@@ -106,6 +115,15 @@ export const updateEntry = (schema: any, req: Request): Entry | Response => {
       ...data,
       updatedAt: now,
     });
+    return entry.attrs as Entry;
+  } catch (error) {
+    return handleErrors(error, "Failed to update entry.");
+  }
+};
+export const deleteEntry = (schema: any, req: Request): Entry | Response => {
+  try {
+    const entry = schema.entries.find(req.params.id);
+    entry.destroy();
     return entry.attrs as Entry;
   } catch (error) {
     return handleErrors(error, "Failed to update entry.");
