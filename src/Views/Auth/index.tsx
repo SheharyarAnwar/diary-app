@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import TextField from "../../Components/TextField/index";
 import { yupValidationSchema } from "../../Validation/index";
 import { Box, Button, Typography } from "@material-ui/core";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./styles";
-interface FormikValues {
-  username: string;
-  password: string;
+import { authenticateUser } from "../../Store/Slices/User/userReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { UserState } from "../../Store/Slices/User/types";
+
+declare module "react-redux" {
+  interface DefaultRootState extends UserState {
+    userReducer: UserState;
+  }
 }
-interface AuthProps {
-  type: "login" | "signup";
-}
+
 const Index: React.FC<AuthProps> = ({ type }) => {
   const classes = styles();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const authenticated = useSelector(
+    (state) => state.userReducer.isAuthenticated
+  );
+  useEffect(() => {
+    authenticated && navigate("/diaries");
+  }, [authenticated]);
   const initialValues: FormikValues = {
     username: "",
     password: "",
@@ -28,6 +39,7 @@ const Index: React.FC<AuthProps> = ({ type }) => {
         }}
         onSubmit={(values) => {
           console.log(values);
+          dispatch(authenticateUser({ ...values, authenticationAction: type }));
         }}
       >
         <Form>
@@ -57,3 +69,10 @@ const Index: React.FC<AuthProps> = ({ type }) => {
 };
 
 export default Index;
+interface FormikValues {
+  username: string;
+  password: string;
+}
+interface AuthProps {
+  type: "login" | "signup";
+}

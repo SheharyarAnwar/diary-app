@@ -18,8 +18,7 @@ interface ServerConfig {
 export const makeServer = (config: ServerConfig) => {
   const server = createServer({
     environment: config.environment,
-    timing: 20,
-    namespace: "api",
+
     models: Models,
     factories: Factories,
     seeds(server) {
@@ -29,6 +28,7 @@ export const makeServer = (config: ServerConfig) => {
     },
 
     routes() {
+      this.urlPrefix = "https://api.diaries.com";
       this.post("/login", login);
       this.post("/signup", signup);
 

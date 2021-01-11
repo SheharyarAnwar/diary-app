@@ -31,13 +31,13 @@ const signup = (
 ): Response | AuthenticationResponse => {
   const { username, password } = JSON.parse(req.requestBody);
   const user = schema.users.findBy({ username });
-  if (username) {
+  if (user) {
     return handleErrors(null, "User Already Exists");
   }
-  schema.user.create({ username, password });
+  const newUser = schema.users.create({ username, password });
   return {
     token: v4(),
-    user: { ...user.attrs, password: undefined },
+    user: { ...newUser.attrs, password: undefined },
   };
 };
 

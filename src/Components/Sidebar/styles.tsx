@@ -1,39 +1,45 @@
 import { makeStyles } from "@material-ui/core";
 
 //const theme=useTheme()
+const drawerWidth = 300;
 const style = makeStyles((theme) => ({
-  navItems: {
-    height: "100vh",
-    // alignItems: "center",
-    // justifyContent: "center",
-    backgroundColor: "white",
-    [theme.breakpoints.down("xs")]: {
-      height: "10vh",
-      margin: "auto",
-      backgroundColor: "transparent",
-    },
-    // "& div": {
-    //   height: "100%",
-    //   display: "flex",
-    //   justifyContent: "center",
-    //   alignItems: "center",
-    //   width: "100px",
-    //   "&:hover": {
-    //     backgroundColor: "rgba(255,255,255,0.2)",
-    //   },
-    // },
+  menuButton: {
+    margin: "auto",
   },
-  active: {
-    borderTop: `3px solid red`,
+  hide: {
+    display: "none",
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    display: "flex",
+    alignItems: "center",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: "flex-end",
   },
 
-  hamburger: {
-    width: "30px",
-    height: "10px",
-    border: "solid black",
-    borderWidth: "2px 0px",
-    cursor: "pointer",
-    margin: "auto",
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
   },
 }));
 export default style;
