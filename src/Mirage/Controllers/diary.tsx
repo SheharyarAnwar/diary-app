@@ -23,6 +23,7 @@ export const create = (
       createdAt: now,
       updatedAt: now,
     });
+    // console.log(diary, "hello from the other side");
     return {
       user: {
         ...exUser.attrs,
@@ -60,7 +61,9 @@ export const deleteDiary = (schema: any, req: Request): Diary | Response => {
 
 export const getDiaries = (schema: any, req: Request): Diary[] | Response => {
   try {
+    console.log(req.params.id, "userId");
     const user = schema.users.find(req.params.id);
+
     return user.diary as Diary[];
   } catch (error) {
     return handleErrors(error, "Could not get user diaries.");

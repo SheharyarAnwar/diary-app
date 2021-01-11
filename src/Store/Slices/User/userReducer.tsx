@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import http from "../../../axiosConfig";
 import { User } from "../../../Mirage/Interfaces/User.interface";
-import { useNavigate } from "react-router-dom";
+
 import { UserState, AuthenticatationParams } from "./types";
 
 const initialState: UserState = {

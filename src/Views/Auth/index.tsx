@@ -7,20 +7,15 @@ import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./styles";
 import { authenticateUser } from "../../Store/Slices/User/userReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { UserState } from "../../Store/Slices/User/types";
 
-declare module "react-redux" {
-  interface DefaultRootState extends UserState {
-    userReducer: UserState;
-  }
-}
+import { RootState } from "../../Store";
 
 const Index: React.FC<AuthProps> = ({ type }) => {
   const classes = styles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const authenticated = useSelector(
-    (state) => state.userReducer.isAuthenticated
+    (state: RootState) => state.userReducer.isAuthenticated
   );
   useEffect(() => {
     authenticated && navigate("/diaries");

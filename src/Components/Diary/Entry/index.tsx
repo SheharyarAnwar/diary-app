@@ -2,8 +2,9 @@ import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import React from "react";
 import styles from "../styles";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import EditIcon from "@material-ui/icons/Edit";
-const Index = () => {
+import { Entry } from "../../../Mirage/Interfaces/Entry.interface";
+// import EditIcon from "@material-ui/icons/Edit";
+const Index: React.FC<Entry> = ({ title, content, id }) => {
   const classes = styles();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
@@ -18,10 +19,10 @@ const Index = () => {
       <ListItem
         button
         className={classes.nested}
-        selected={selectedIndex === 0}
+        // selected={selectedIndex === 0}
         onClick={(event) => handleListItemClick(event, 0)}
       >
-        <ListItemText primary="Entry 1" />
+        <ListItemText primary={title} />
         <ListItemIcon>
           <DeleteOutlineIcon titleAccess="Delete Diary" />
         </ListItemIcon>

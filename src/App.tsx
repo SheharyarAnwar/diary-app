@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import store from "./Store";
+import { store, persistor } from "./Store";
 import {
   Routes,
   Route,
@@ -14,12 +14,14 @@ import { ToastContainer } from "react-toastify";
 import theme from "./theme";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider } from "@material-ui/core";
+import { PersistGate } from "redux-persist/integration/react";
 
 function App() {
   useEffect(() => {}, []);
   return (
     <>
       <Provider store={store}>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
         <ThemeProvider theme={theme}>
           <ToastContainer
             position="top-right"
@@ -41,6 +43,7 @@ function App() {
             </Routes>
           </Router>
         </ThemeProvider>
+        {/* </PersistGate> */}
       </Provider>
     </>
   );

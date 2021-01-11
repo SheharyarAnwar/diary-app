@@ -2,8 +2,9 @@ import { createServer } from "miragejs";
 import { Models } from "./Models/index";
 import { Factories } from "./Factories/index";
 import { login, signup } from "./Controllers/users";
-import { create } from "domain";
+
 import {
+  create,
   getEntries,
   getDiaries,
   addEntry,
@@ -35,7 +36,7 @@ export const makeServer = (config: ServerConfig) => {
       this.get("/diaries/entries/:id", getEntries);
       this.get("/diaries/:id", getDiaries);
 
-      this.post("/diaries/", create);
+      this.post("/diaries", create);
       this.post("/diaries/entry/:id", addEntry);
 
       this.put("/diaries/entry/:id", updateEntry);
