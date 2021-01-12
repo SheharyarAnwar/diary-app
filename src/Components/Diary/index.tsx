@@ -27,6 +27,7 @@ import {
   getDiariesByUserId,
   triggerEntryUpdate,
 } from "../../Store/Slices/Diary/diaryReducer";
+import { selectEntry } from "../../Store/Slices/User/userReducer";
 
 const Index: React.FC<DiaryProps> = ({ title, id }) => {
   const [open, setOpen] = React.useState(true);
@@ -40,6 +41,7 @@ const Index: React.FC<DiaryProps> = ({ title, id }) => {
     (state: RootState) => state.diaryReducer.entryUpdated
   );
   useEffect(() => {
+    dispatch(selectEntry(null));
     http.get(`/diaries/entries/${id}`).then((response) => {
       setEntry(response.data.entries);
     });
@@ -69,14 +71,7 @@ const Index: React.FC<DiaryProps> = ({ title, id }) => {
         setEntry((prev) => [...prev, response.data.entry]);
       });
   };
-  const handleDeleteEntry = () => {
-    console.log("delete diary clicked", userId);
-    http.delete(`diaries/${id}`).then(() => {
-      dispatch(getDiariesByUserId(userId as string));
-      dispatch(triggerEntryUpdate());
-    });
-    setDialogOpen(false);
-  };
+
   const handleAddIconClicked = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {

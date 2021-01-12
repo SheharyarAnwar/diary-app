@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import http from "../../../axiosConfig";
 import { Entry } from "../../../Mirage/Interfaces/Entry.interface";
 import { User } from "../../../Mirage/Interfaces/User.interface";
@@ -33,7 +34,7 @@ const slice = createSlice({
   name: "user",
   initialState: initialState,
   reducers: {
-    selectEntry: (state, action: PayloadAction<Entry>) => {
+    selectEntry: (state, action: PayloadAction<Entry | null>) => {
       state.selectedEntry = action.payload;
     },
   },
