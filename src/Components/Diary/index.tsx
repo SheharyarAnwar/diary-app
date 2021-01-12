@@ -21,23 +21,42 @@ import Entry from "./Entry";
 import { Diary as DiaryProps } from "../../Mirage/Interfaces/Diary.interface";
 import { Entry as EntryI } from "../../Mirage/Interfaces/Entry.interface";
 import http from "../../axiosConfig";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../Store";
+import {
+  getDiariesByUserId,
+  triggerEntryUpdate,
+} from "../../Store/Slices/Diary/diaryReducer";
 
-const Index: React.FC<DiaryProps> = ({ title, userId, id }) => {
+const Index: React.FC<DiaryProps> = ({ title, id }) => {
   const [open, setOpen] = React.useState(true);
-  // const dispatch = useDispatch();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [entry, setEntry] = useState<EntryI[]>([]);
-
+  const [selectedEntry, setSelectedEntry] = React.useState("");
+  const userId = useSelector((state: RootState) => state.userReducer.id);
   const [entryTitle, setEntryTitle] = useState<string>("My Entry");
+  const dispatch = useDispatch();
+  const entryChanges = useSelector(
+    (state: RootState) => state.diaryReducer.entryUpdated
+  );
   useEffect(() => {
     http.get(`/diaries/entries/${id}`).then((response) => {
       setEntry(response.data.entries);
     });
-  }, []);
+  }, [entryChanges]);
+  const handleEntrySelection = (id: string) => {
+    setSelectedEntry(id);
+  };
   const renderedEntries =
     entry &&
     entry.map((val) => {
-      return <Entry {...val} />;
+      return (
+        <Entry
+          selected={selectedEntry === val.id}
+          onClick={handleEntrySelection}
+          {...val}
+        />
+      );
     });
   const addEntry = () => {
     setDialogOpen(false);
@@ -51,6 +70,11 @@ const Index: React.FC<DiaryProps> = ({ title, userId, id }) => {
       });
   };
   const handleDeleteEntry = () => {
+    console.log("delete diary clicked", userId);
+    http.delete(`diaries/${id}`).then(() => {
+      dispatch(getDiariesByUserId(userId as string));
+      dispatch(triggerEntryUpdate());
+    });
     setDialogOpen(false);
   };
   const handleAddIconClicked = (
@@ -92,9 +116,7 @@ const Index: React.FC<DiaryProps> = ({ title, userId, id }) => {
       <List style={{ width: "100%" }}>
         <ListItem button onClick={handleClick}>
           <ListItemText primary={title} />
-          <ListItemIcon onClick={handleDeleteEntry}>
-            <DeleteOutlineIcon titleAccess="Delete Diary" />
-          </ListItemIcon>
+
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>

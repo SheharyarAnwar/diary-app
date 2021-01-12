@@ -48,6 +48,9 @@ const Index: React.FC = ({ children }) => {
     event.stopPropagation();
     setDialogOpen(true);
   };
+  useEffect(() => {
+    console.log(diary, "+++++++++++++++");
+  }, [diary]);
   const addDiary = () => {
     setDialogOpen(false);
     dispatch(createDiary({ title, type: "private", userId: userId as string }));
@@ -55,6 +58,7 @@ const Index: React.FC = ({ children }) => {
   let renderedLinks =
     diary &&
     diary.map((val) => {
+      console.log(val, "diary info");
       return <Diary {...val} />;
     });
 

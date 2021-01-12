@@ -5,6 +5,7 @@ import { CreateDiaryParams, DiaryState } from "./types";
 
 const initialState: DiaryState = {
   diaries: [],
+  entryUpdated: false,
 };
 const createDiary = createAsyncThunk(
   "user/createDiary",
@@ -25,7 +26,11 @@ const getDiariesByUserId = createAsyncThunk(
 const slice = createSlice({
   name: "diary",
   initialState,
-  reducers: {},
+  reducers: {
+    triggerEntryUpdate: (state) => {
+      state.entryUpdated = !state.entryUpdated;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getDiariesByUserId.fulfilled, (state, action) => {
       state.diaries = action.payload;
@@ -36,6 +41,6 @@ const slice = createSlice({
   },
 });
 
-const {} = slice.actions;
-export { createDiary, getDiariesByUserId };
+const { triggerEntryUpdate } = slice.actions;
+export { triggerEntryUpdate, createDiary, getDiariesByUserId };
 export default slice.reducer;

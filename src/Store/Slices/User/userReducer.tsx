@@ -1,5 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import http from "../../../axiosConfig";
+import { Entry } from "../../../Mirage/Interfaces/Entry.interface";
 import { User } from "../../../Mirage/Interfaces/User.interface";
 
 import { UserState, AuthenticatationParams } from "./types";
@@ -10,6 +11,7 @@ const initialState: UserState = {
   id: null,
   username: null,
   diaryIds: null,
+  selectedEntry: null,
 };
 const authenticateUser = createAsyncThunk(
   "user/authenticateWithEmailAndPassword",
@@ -30,7 +32,11 @@ const authenticateUser = createAsyncThunk(
 const slice = createSlice({
   name: "user",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    selectEntry: (state, action: PayloadAction<Entry>) => {
+      state.selectedEntry = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(authenticateUser.fulfilled, (state, action) => {
       const {
@@ -47,6 +53,6 @@ const slice = createSlice({
   },
 });
 
-const {} = slice.actions;
-export { authenticateUser };
+const { selectEntry } = slice.actions;
+export { authenticateUser, selectEntry };
 export default slice.reducer;

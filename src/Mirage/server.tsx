@@ -42,8 +42,8 @@ export const makeServer = (config: ServerConfig) => {
       this.put("/diaries/entry/:id", updateEntry);
       this.put("/diaries/:id", updateDiary);
 
-      this.del("/diaries/entry/:id", deleteEntry);
-      this.del("/diaries/:id", deleteDiary);
+      this.delete("/diaries/entry/:id", deleteEntry);
+      this.delete("/diaries/:id", deleteDiary);
     },
   });
 

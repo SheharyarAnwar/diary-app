@@ -53,6 +53,8 @@ export const deleteDiary = (schema: any, req: Request): Diary | Response => {
   try {
     const diary = schema.diaries.find(req.params.id);
     diary.destroy();
+    diary.entry.destroy();
+    // console.log(diary.entry, "yeeha", diary);
     return diary.attrs as Diary;
   } catch (error) {
     return handleErrors(error, "Failed to update Diary.");

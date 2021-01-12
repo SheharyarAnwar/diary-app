@@ -3,28 +3,55 @@ import React from "react";
 import styles from "../styles";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import { Entry } from "../../../Mirage/Interfaces/Entry.interface";
-// import EditIcon from "@material-ui/icons/Edit";
-const Index: React.FC<Entry> = ({ title, content, id }) => {
-  const classes = styles();
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+import { useDispatch } from "react-redux";
+import { selectEntry } from "../../../Store/Slices/User/userReducer";
+import { triggerEntryUpdate } from "../../../Store/Slices/Diary/diaryReducer";
+import http from "../../../axiosConfig";
 
-  const handleListItemClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number
+interface EntryProps extends Entry {
+  onClick: any;
+  selected: boolean;
+}
+const Index: React.FC<EntryProps> = ({
+  title,
+  content,
+  diaryId,
+  id,
+  onClick,
+  selected,
+  createdAt,
+  updatedAt,
+}) => {
+  const dispatch = useDispatch();
+  const classes = styles();
+  const deleteEntryClicked = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    setSelectedIndex(index);
+    e.stopPropagation();
+    console.log("Yoi");
+    http.delete(`/diaries/entry/${id}`).then((res) => {
+      console.log(res);
+      dispatch(triggerEntryUpdate());
+    });
   };
+  const clickedHandler = () => {
+    onClick(id);
+    dispatch(
+      selectEntry({ content, diaryId, id, title, createdAt, updatedAt })
+    );
+  };
+
   return (
     <>
       <ListItem
         button
         className={classes.nested}
-        // selected={selectedIndex === 0}
-        onClick={(event) => handleListItemClick(event, 0)}
+        selected={selected}
+        onClick={clickedHandler}
       >
         <ListItemText primary={title} />
-        <ListItemIcon>
-          <DeleteOutlineIcon titleAccess="Delete Diary" />
+        <ListItemIcon onClick={deleteEntryClicked}>
+          <DeleteOutlineIcon titleAccess="Delete Entry" />
         </ListItemIcon>
       </ListItem>
     </>

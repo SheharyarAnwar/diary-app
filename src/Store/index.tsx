@@ -11,18 +11,15 @@ import { DiaryState } from "./Slices/Diary/types";
 import { UserState } from "./Slices/User/types";
 import userReducer from "./Slices/User/userReducer";
 import diaryReducer from "./Slices/Diary/diaryReducer";
-import entryReducer from "./Slices/Entry/entryReducer";
-import { EntryState } from "./Slices/Entry/types";
+
 export interface RootState {
   userReducer: UserState;
   diaryReducer: DiaryState;
-  entryReducer: EntryState;
 }
 const reducer = combineReducers({
   // here we will be adding reducers
   userReducer,
   diaryReducer,
-  entryReducer,
 });
 const persistConfig = {
   key: "root",
